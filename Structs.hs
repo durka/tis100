@@ -5,6 +5,7 @@ module Structs where
 import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Maybe
+import Data.Array
 
 data Direction = LEFT | RIGHT | UP | DOWN
     deriving(Show)
@@ -64,12 +65,12 @@ data Input = Input Text
 data Output = Output Text
     deriving(Show)
 
-data Machine = Machine [Cell] [(Maybe Input)] [(Maybe Output)]
+data Machine = Machine (Array (Int, Int) Cell) (Array Int (Maybe Input)) (Array Int (Maybe Output))
     deriving(Show)
 
 printLine (Line label instr comment) =
     let label_str (Label label) = label <> ":"
         comment_str (Comment comment) = "# " <> comment
     in
-        T.unpack $ T.unwords $ catMaybes [label_str <$> label, (T.pack . show) <$> instr, comment_str <$> comment]
+        T.unwords $ catMaybes [label_str <$> label, (T.pack . show) <$> instr, comment_str <$> comment]
 
